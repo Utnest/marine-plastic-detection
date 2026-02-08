@@ -1,0 +1,24 @@
+name: Demo Health Check
+
+on:
+  push:
+    paths:
+      - "streamlit_app/**"
+
+permissions:
+  contents: read
+
+jobs:
+  demo-health-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run demo health check
+        uses: ./.github/actions/demo-health

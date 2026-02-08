@@ -1,0 +1,52 @@
+name: Training Smoke Test
+description: Run a minimal YOLO training job to verify training still works.
+
+inputs:
+  data_config:
+    description: Path to YOLO dataset YAML.
+    required: false
+    default: datasets/data.yaml
+  task:
+    description: YOLO task type (detect, segment, classify, pose).
+    required: false
+    default: detect
+  model:
+    description: YOLO model checkpoint or model id.
+    required: false
+    default: yolov8n.pt
+  epochs:
+    description: Number of training epochs.
+    required: false
+    default: "1"
+  max_images:
+    description: Number of images to include in smoke dataset.
+    required: false
+    default: "5"
+  imgsz:
+    description: Input image size for training.
+    required: false
+    default: "640"
+  project_dir:
+    description: Output directory for smoke run artifacts.
+    required: false
+    default: ci-smoke-runs
+  run_name:
+    description: Name for the smoke run.
+    required: false
+    default: smoke
+
+runs:
+  using: composite
+  steps:
+    - name: Run training smoke test
+      shell: bash
+      run: |
+        bash "${{ github.action_path }}/run_smoke_test.sh" \
+          "${{ inputs.data_config }}" \
+          "${{ inputs.task }}" \
+          "${{ inputs.model }}" \
+          "${{ inputs.epochs }}" \
+          "${{ inputs.max_images }}" \
+          "${{ inputs.imgsz }}" \
+          "${{ inputs.project_dir }}" \
+          "${{ inputs.run_name }}"

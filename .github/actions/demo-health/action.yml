@@ -1,0 +1,37 @@
+name: Demo Health Check
+description: Install dependencies, import Streamlit app, and run a dummy inference.
+
+inputs:
+  app_file:
+    description: Path to Streamlit app python file.
+    required: false
+    default: streamlit_app/app.py
+  requirements_file:
+    description: Primary requirements file for Streamlit app.
+    required: false
+    default: streamlit_app/requirements.txt
+  fallback_requirements_file:
+    description: Fallback requirements file.
+    required: false
+    default: requirements.txt
+  inference_functions:
+    description: Comma-separated inference function names to try.
+    required: false
+    default: run_inference,predict,infer
+  image_size:
+    description: Dummy image size in pixels.
+    required: false
+    default: "640"
+
+runs:
+  using: composite
+  steps:
+    - name: Run demo health check
+      shell: bash
+      run: |
+        bash "${{ github.action_path }}/check_demo.sh" \
+          "${{ inputs.app_file }}" \
+          "${{ inputs.requirements_file }}" \
+          "${{ inputs.fallback_requirements_file }}" \
+          "${{ inputs.inference_functions }}" \
+          "${{ inputs.image_size }}"

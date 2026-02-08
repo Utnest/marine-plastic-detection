@@ -1,0 +1,27 @@
+name: Dataset Sanity Check
+description: Validate YOLO dataset structure and annotation integrity.
+
+inputs:
+  image_dir:
+    description: Path to dataset images directory.
+    required: false
+    default: datasets/images
+  label_dir:
+    description: Path to dataset labels directory.
+    required: false
+    default: datasets/labels
+  require_non_empty_annotations:
+    description: Fail if a label file has no annotation rows.
+    required: false
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - name: Run dataset validation
+      shell: bash
+      run: |
+        bash "${{ github.action_path }}/check_dataset.sh" \
+          "${{ inputs.image_dir }}" \
+          "${{ inputs.label_dir }}" \
+          "${{ inputs.require_non_empty_annotations }}"

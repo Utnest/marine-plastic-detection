@@ -1,0 +1,19 @@
+name: Dataset Sanity Check
+
+on:
+  pull_request:
+    paths:
+      - "datasets/**"
+
+permissions:
+  contents: read
+
+jobs:
+  dataset-sanity-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate dataset
+        uses: ./.github/actions/dataset-check
